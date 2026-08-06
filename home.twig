@@ -1,0 +1,297 @@
+{#
+  ==========================================================================
+  TEMPLATE: views/pages/home.twig
+  DESCRIPTION: Premium Fashion Homepage for Salla Twilight Theme Framework
+  DESIGN SYSTEM: High-End Fashion / Luxury Minimalist (Tailwind CSS, RTL/LTR)
+  ==========================================================================
+#}
+
+{% extends "layouts.master" %}
+
+{% block content %}
+<div class="fashion-homepage w-full bg-[{{ theme.settings.bg_color | default('#FDFBF7') }}] text-neutral-900 overflow-hidden transition-colors duration-300">
+
+  <!-- ================================================================== -->
+  <!-- 1. PREMIUM HERO BANNER SECTION                                     -->
+  <!-- ================================================================== -->
+  <section class="relative w-full h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-neutral-900">
+    <!-- Background Image with Ken Burns / Zoom Effect & Dark Overlay -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="{{ theme.settings.hero_image | default('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2000&auto=format&fit=crop') }}" 
+        alt="{{ trans('pages.home.hero_alt') }}" 
+        class="w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000 ease-out hover:scale-100 opacity-80"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/30 to-transparent"></div>
+    </div>
+
+    <!-- Hero Content Container -->
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center text-white flex flex-col items-center">
+      <span class="text-xs uppercase tracking-[0.3em] font-medium mb-4 text-amber-200/90 animate-fade-in">
+        {{ trans('pages.home.season_badge') | default('Autumn / Winter 2026 Collection') }}
+      </span>
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-light tracking-wide mb-6 leading-tight max-w-4xl">
+        {{ theme.settings.hero_title | default(trans('pages.home.default_hero_title')) }}
+      </h1>
+      <p class="text-lg sm:text-xl font-light text-neutral-200 mb-10 max-w-2xl font-sans tracking-wide">
+        {{ theme.settings.hero_subtitle | default(trans('pages.home.default_hero_subtitle')) }}
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 items-center justify-center w-full">
+        <a 
+          href="{{ theme.settings.hero_btn_url | default('/collections/all') }}" 
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-neutral-900 text-sm uppercase tracking-widest font-medium rounded-none hover:bg-neutral-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        >
+          <span>{{ theme.settings.hero_btn_text | default(trans('pages.home.shop_now')) }}</span>
+          <i class="sicon-keyboard-arrow-right rtl:rotate-180 ms-2 text-base"></i>
+        </a>
+        <a 
+          href="{{ theme.settings.hero_secondary_btn_url | default('/pages/lookbook') }}" 
+          class="inline-flex items-center justify-center px-8 py-4 border border-white/60 text-white text-sm uppercase tracking-widest font-medium rounded-none hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
+        >
+          <span>{{ trans('pages.home.explore_lookbook') | default('Explore Lookbook') }}</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 hidden sm:flex flex-col items-center text-white/70 animate-bounce">
+      <span class="text-[10px] uppercase tracking-widest mb-2">{{ trans('pages.home.scroll') | default('Scroll') }}</span>
+      <i class="sicon-mouse text-lg"></i>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 2. CURATED CATEGORIES GRID                                         -->
+  <!-- ================================================================== -->
+  <section class="py-24 px-6 sm:px-12 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <span class="text-xs uppercase tracking-[0.25em] text-neutral-500 block mb-2 font-medium">
+          {{ trans('pages.home.curated_subtitle') | default('Handcrafted Selection') }}
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-light text-neutral-900 tracking-wide">
+          {{ trans('pages.home.curated_title') | default('Curated Categories') }}
+        </h2>
+      </div>
+      <a href="{{ url('/categories') }}" class="mt-4 md:mt-0 text-xs uppercase tracking-widest font-medium text-neutral-900 border-b border-neutral-900 pb-1 hover:text-neutral-600 hover:border-neutral-600 transition-colors inline-flex items-center">
+        <span>{{ trans('pages.home.view_all_categories') | default('View All Categories') }}</span>
+        <i class="sicon-arrow-left rtl:rotate-180 ms-1"></i>
+      </a>
+    </div>
+
+    <!-- Categories Grid (Menswear, Womenswear, Accessories) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% set categories_list = categories | default([
+        { name: 'Womenswear', url: '/category/womenswear', image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop', count: '124 Items' },
+        { name: 'Menswear', url: '/category/menswear', image: 'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=800&auto=format&fit=crop', count: '98 Items' },
+        { name: 'Luxury Accessories', url: '/category/accessories', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=800&auto=format&fit=crop', count: '64 Items' }
+      ]) %}
+
+      {% for cat in categories_list %}
+        <div class="group relative h-[480px] overflow-hidden bg-neutral-100 cursor-pointer">
+          <!-- Image with Hover Zoom Animation -->
+          <a href="{{ cat.url }}" class="block w-full h-full">
+            <img 
+              src="{{ cat.image }}" 
+              alt="{{ cat.name }}" 
+              class="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-110"
+              loading="lazy"
+            />
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/20 to-transparent transition-opacity duration-300 group-hover:opacity-90"></div>
+
+            <!-- Content Box -->
+            <div class="absolute bottom-0 inset-x-0 p-8 text-white transform transition-transform duration-300">
+              <span class="text-xs uppercase tracking-[0.2em] text-neutral-300 block mb-1">
+                {{ cat.count }}
+              </span>
+              <h3 class="text-2xl font-serif font-normal tracking-wide mb-3 flex items-center justify-between">
+                <span>{{ cat.name }}</span>
+                <span class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center transform translate-x-4 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                  <i class="sicon-keyboard-arrow-right rtl:rotate-180 text-sm"></i>
+                </span>
+              </h3>
+              <span class="text-xs uppercase tracking-widest border-b border-white/60 pb-0.5 inline-block opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                {{ trans('pages.home.discover') | default('Discover Collection') }}
+              </span>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 3. TRENDING PRODUCTS SECTION (Toggleable)                          -->
+  <!-- ================================================================== -->
+  {% if theme.settings.show_trending | default(true) %}
+    <section class="py-24 bg-neutral-50/50 border-y border-neutral-200/60">
+      <div class="max-w-7xl mx-auto px-6 sm:px-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div>
+            <span class="text-xs uppercase tracking-[0.25em] text-neutral-500 block mb-2 font-medium">
+              {{ trans('pages.home.trending_subtitle') | default('Most Desired This Week') }}
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-serif font-light text-neutral-900 tracking-wide">
+              {{ trans('pages.home.trending_title') | default('Trending Products') }}
+            </h2>
+          </div>
+          <div class="mt-4 md:mt-0 flex items-center gap-4">
+            <a href="{{ url('/collections/trending') }}" class="text-xs uppercase tracking-widest font-medium text-neutral-900 border-b border-neutral-900 pb-1 hover:text-neutral-600 hover:border-neutral-600 transition-colors inline-flex items-center">
+              <span>{{ trans('pages.home.view_all') | default('View All Products') }}</span>
+              <i class="sicon-arrow-left rtl:rotate-180 ms-1"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Products Grid / Carousel -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {% if products|length %}
+            {% for product in products|slice(0, 4) %}
+              {% include 'components.product-card' with { 'product': product } %}
+            {% endfor %}
+          {% else %}
+            {# Fallback mock products if server variable is empty during standalone preview #}
+            {% set mock_products = [
+              { name: 'Silk Oversized Shirt', brand: 'Twilight Atelier', url: '#', price: '1,450 SAR', regular_price: '1,890 SAR', on_sale: true, image: 'https://images.unsplash.com/photo-1598554747436-c9293d6a588f?q=80&w=800&auto=format&fit=crop', promotion_title: 'Sale 20%' },
+              { name: 'Tailored Wool Blazer', brand: 'Maison Noir', url: '#', price: '2,800 SAR', regular_price: '', on_sale: false, image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop', promotion_title: 'New' },
+              { name: 'Pleated Midi Skirt', brand: 'Twilight Atelier', url: '#', price: '950 SAR', regular_price: '', on_sale: false, image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=800&auto=format&fit=crop', promotion_title: '' },
+              { name: 'Cashmere Turtleneck Sweater', brand: 'Nordic Luxe', url: '#', price: '1,950 SAR', regular_price: '2,200 SAR', on_sale: true, image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=800&auto=format&fit=crop', promotion_title: 'Bestseller' }
+            ] %}
+            
+            {% for product in mock_products %}
+              {% include 'components.product-card' with { 'product': product } %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ================================================================== -->
+  <!-- 4. PROMOTIONAL GRID LAYOUT LINKING TO COLLECTIONS                  -->
+  <!-- ================================================================== -->
+  <section class="py-24 px-6 sm:px-12 max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <span class="text-xs uppercase tracking-[0.25em] text-neutral-500 block mb-2 font-medium">
+        {{ trans('pages.home.editorial_subtitle') | default('Spring Editorial') }}
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-serif font-light text-neutral-900 tracking-wide mb-4">
+        {{ trans('pages.home.editorial_title') | default('The Twilight Edit') }}
+      </h2>
+      <p class="text-sm text-neutral-600 font-light leading-relaxed">
+        {{ trans('pages.home.editorial_desc') | default('Explore our curated thematic capsules designed for the modern wardrobe, combining exquisite tailoring with sustainable fabrics.') }}
+      </p>
+    </div>
+
+    <!-- Asymmetric Promotional Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Feature Card 1 (Large Left) -->
+      <div class="lg:col-span-7 relative h-[520px] overflow-hidden bg-neutral-900 group">
+        <a href="/collections/evening-wear" class="block w-full h-full">
+          <img 
+            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop" 
+            alt="Evening Wear Capsule" 
+            class="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-105 opacity-85"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/20 to-transparent"></div>
+          <div class="absolute bottom-0 inset-x-0 p-10 text-white">
+            <span class="text-xs uppercase tracking-[0.25em] text-amber-200 block mb-2 font-medium">
+              {{ trans('pages.home.capsule_01') | default('Capsule I') }}
+            </span>
+            <h3 class="text-3xl font-serif font-light tracking-wide mb-4">
+              {{ trans('pages.home.evening_wear') | default('Modern Evening & Gala') }}
+            </h3>
+            <span class="inline-flex items-center text-xs uppercase tracking-widest font-medium border-b border-white pb-1 group-hover:border-amber-200 group-hover:text-amber-200 transition-colors">
+              <span>{{ trans('pages.home.explore_capsule') | default('Explore Capsule') }}</span>
+              <i class="sicon-keyboard-arrow-right rtl:rotate-180 ms-2"></i>
+            </span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Feature Card 2 & 3 (Stacked Right) -->
+      <div class="lg:col-span-5 flex flex-col gap-8">
+        <!-- Card 2 -->
+        <div class="relative h-[242px] overflow-hidden bg-neutral-900 group">
+          <a href="/collections/minimalist-basics" class="block w-full h-full">
+            <img 
+              src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=800&auto=format&fit=crop" 
+              alt="Minimalist Basics" 
+              class="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-105 opacity-85"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent"></div>
+            <div class="absolute bottom-0 inset-x-0 p-6 text-white">
+              <span class="text-xs uppercase tracking-[0.2em] text-amber-200 block mb-1">
+                {{ trans('pages.home.capsule_02') | default('Capsule II') }}
+              </span>
+              <h3 class="text-xl font-serif font-light tracking-wide flex items-center justify-between">
+                <span>{{ trans('pages.home.minimal_basics') | default('Essential Tailoring') }}</span>
+                <i class="sicon-keyboard-arrow-right rtl:rotate-180 text-sm transform transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i>
+              </h3>
+            </div>
+          </a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="relative h-[242px] overflow-hidden bg-neutral-900 group">
+          <a href="/collections/accessories" class="block w-full h-full">
+            <img 
+              src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800&auto=format&fit=crop" 
+              alt="Luxury Accessories" 
+              class="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-105 opacity-85"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent"></div>
+            <div class="absolute bottom-0 inset-x-0 p-6 text-white">
+              <span class="text-xs uppercase tracking-[0.2em] text-amber-200 block mb-1">
+                {{ trans('pages.home.capsule_03') | default('Capsule III') }}
+              </span>
+              <h3 class="text-xl font-serif font-light tracking-wide flex items-center justify-between">
+                <span>{{ trans('pages.home.leather_goods') | default('Artisanal Leather Goods') }}</span>
+                <i class="sicon-keyboard-arrow-right rtl:rotate-180 text-sm transform transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i>
+              </h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 5. BRAND VALUES / NEWSLETTER BANNER                                -->
+  <!-- ================================================================== -->
+  <section class="py-20 bg-neutral-900 text-white px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <span class="text-xs uppercase tracking-[0.3em] text-amber-200 block mb-3 font-medium">
+        {{ trans('pages.home.newsletter_badge') | default('Join The Inner Circle') }}
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-serif font-light mb-4 tracking-wide">
+        {{ trans('pages.home.newsletter_title') | default('Receive Private Invitations & Editorial Notes') }}
+      </h2>
+      <p class="text-neutral-400 font-light text-sm sm:text-base mb-8 max-w-xl mx-auto">
+        {{ trans('pages.home.newsletter_desc') | default('Subscribe to receive early access to limited capsule releases, private runway viewings, and bespoke styling advice.') }}
+      </p>
+
+      <form action="{{ url('/newsletter/subscribe') }}" method="POST" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="{{ trans('pages.home.email_placeholder') | default('Enter your email address') }}" 
+          required 
+          class="flex-1 px-5 py-4 bg-neutral-800 text-white placeholder-neutral-400 text-sm border border-neutral-700 focus:outline-none focus:border-white transition-colors rounded-none"
+        />
+        <button 
+          type="submit" 
+          class="px-8 py-4 bg-white text-neutral-900 text-xs uppercase tracking-widest font-medium hover:bg-neutral-200 transition-colors rounded-none whitespace-nowrap"
+        >
+          <span>{{ trans('pages.home.subscribe') | default('Subscribe') }}</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

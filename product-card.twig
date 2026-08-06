@@ -1,0 +1,132 @@
+{#
+  ==========================================================================
+  COMPONENT: views/components/product-card.twig
+  DESCRIPTION: Reusable High-End Clothing Product Card for Salla Twilight Theme
+  DESIGN SYSTEM: Luxury Fashion Minimalist (Tailwind CSS, RTL/LTR compatible)
+  ==========================================================================
+#}
+
+<div class="product-card group relative flex flex-col bg-white overflow-hidden transition-all duration-300">
+  
+  <!-- ================================================================== -->
+  <!-- 1. IMAGE WRAPPER & ASPECT RATIO MANAGEMENT                         -->
+  <!-- ================================================================== -->
+  <div class="relative w-full aspect-[3/4] bg-neutral-100 overflow-hidden">
+    <a href="{{ product.url }}" class="block w-full h-full">
+      <!-- Primary Product Image -->
+      <img 
+        src="{{ product.image.url | default(product.image) }}" 
+        alt="{{ product.image.alt | default(product.name) }}" 
+        class="w-full h-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-105"
+        loading="lazy"
+      />
+      
+      {% if product.images and product.images[1] %}
+        <!-- Secondary Image on Hover (if available) -->
+        <img 
+          src="{{ product.images[1].url }}" 
+          alt="{{ product.name }} - Alternate View" 
+          class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
+          loading="lazy"
+        />
+      {% endif %}
+    </a>
+
+    <!-- Badges (Sale, New, Out of Stock) -->
+    <div class="absolute top-3 start-3 z-10 flex flex-col gap-1.5 pointer-events-none">
+      {% if product.promotion_title %}
+        <span class="px-2.5 py-1 bg-neutral-900 text-white text-[10px] uppercase tracking-widest font-medium shadow-sm">
+          {{ product.promotion_title }}
+        </span>
+      {% elseif product.on_sale %}
+        <span class="px-2.5 py-1 bg-rose-900 text-white text-[10px] uppercase tracking-widest font-medium shadow-sm">
+          {{ trans('components.products.sale') | default('Sale') }}
+        </span>
+      {% endif %}
+      
+      {% if product.is_new %}
+        <span class="px-2.5 py-1 bg-amber-100 text-amber-900 text-[10px] uppercase tracking-widest font-medium shadow-sm">
+          {{ trans('components.products.new') | default('New') }}
+        </span>
+      {% endif %}
+    </div>
+
+    <!-- Quick Wishlist Button -->
+    <button 
+      type="button"
+      aria-label="{{ trans('components.products.add_to_wishlist') | default('Add to Wishlist') }}"
+      class="absolute top-3 end-3 z-10 w-9 h-9 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-neutral-800 opacity-0 transform translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-white hover:text-rose-600 shadow-md"
+      onclick="salla.cart.addItem({product_id: {{ product.id }}})"
+    >
+      <i class="sicon-heart text-sm"></i>
+    </button>
+
+    <!-- Quick Add to Cart Overlay / Button -->
+    <div class="absolute bottom-3 inset-x-3 z-10 opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+      <button 
+        type="button"
+        class="w-full py-3 bg-white/90 backdrop-blur-md text-neutral-900 hover:bg-neutral-900 hover:text-white text-xs uppercase tracking-widest font-medium transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
+        onclick="salla.cart.add({ id: {{ product.id }}, quantity: 1 })"
+      >
+        <i class="sicon-bag text-sm"></i>
+        <span>{{ trans('components.products.quick_add') | default('Quick Add') }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 2. PRODUCT INFO & TYPOGRAPHY HIERARCHY                             -->
+  <!-- ================================================================== -->
+  <div class="pt-4 pb-2 px-1 flex flex-col flex-1 justify-between">
+    <div>
+      <!-- Brand Name -->
+      {% if product.brand %}
+        <span class="text-[11px] uppercase tracking-[0.2em] text-neutral-500 block mb-1 font-medium">
+          {{ product.brand.name | default(product.brand) }}
+        </span>
+      {% endif %}
+
+      <!-- Product Title -->
+      <h3 class="font-serif text-base font-normal text-neutral-900 tracking-wide mb-2 line-clamp-1">
+        <a href="{{ product.url }}" class="hover:text-neutral-600 transition-colors">
+          {{ product.name }}
+        </a>
+      </h3>
+    </div>
+
+    <!-- Price Formatting -->
+    <div class="flex items-center gap-3 mt-1">
+      {% if product.on_sale %}
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-medium text-rose-900 tabular-nums">
+            {{ product.sale_price | money }}
+          </span>
+          <span class="text-xs text-neutral-400 line-through tabular-nums">
+            {{ product.regular_price | money }}
+          </span>
+        </div>
+      {% else %}
+        <span class="text-sm font-medium text-neutral-900 tabular-nums">
+          {{ product.price | money }}
+        </span>
+      {% endif %}
+    </div>
+
+    <!-- Color Swatches (if available) -->
+    {% if product.options and product.options.colors %}
+      <div class="flex items-center gap-1.5 mt-3 pt-3 border-t border-neutral-100">
+        {% for color in product.options.colors | slice(0, 4) %}
+          <span 
+            class="w-3 h-3 rounded-full border border-neutral-300 cursor-pointer transition-transform hover:scale-110" 
+            style="background-color: {{ color.value }};"
+            title="{{ color.name }}"
+          ></span>
+        {% endfor %}
+        {% if product.options.colors | length > 4 %}
+          <span class="text-[10px] text-neutral-400 ms-1">+{{ (product.options.colors | length) - 4 }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+</div>
