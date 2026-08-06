@@ -1,0 +1,80 @@
+{
+  "version": "1.0.0",
+  "theme_name": "Twilight Luxe Fashion",
+  "repo_url": "https://github.com/SallaApp/twilight-luxe-fashion",
+  "support_url": "https://salla.dev",
+  "settings": [
+    {
+      "type": "color",
+      "label": "لون خلفية المتجر (Background Color)",
+      "id": "bg_color",
+      "format": "color",
+      "value": "#FDFBF7",
+      "group": "colors"
+    },
+    {
+      "type": "string",
+      "label": "عنوان البانر الرئيسي (Hero Title)",
+      "id": "hero_title",
+      "format": "text",
+      "value": "Elegance in Every Thread",
+      "group": "hero"
+    },
+    {
+      "type": "string",
+      "label": "النص التوضيحي للبانر (Hero Subtitle)",
+      "id": "hero_subtitle",
+      "format": "textarea",
+      "value": "Discover our new Autumn/Winter 2026 collection crafted from the world's finest sustainable fabrics.",
+      "group": "hero"
+    },
+    {
+      "type": "string",
+      "label": "رابط صورة البانر (Hero Image URL)",
+      "id": "hero_image",
+      "format": "image",
+      "value": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2000&auto=format&fit=crop",
+      "group": "hero"
+    },
+    {
+      "type": "string",
+      "label": "نص زر البانر الرئيسي (Hero Button Text)",
+      "id": "hero_btn_text",
+      "format": "text",
+      "value": "Shop Collection",
+      "group": "hero"
+    },
+    {
+      "type": "string",
+      "label": "رابط زر البانر الرئيسي (Hero Button URL)",
+      "id": "hero_btn_url",
+      "format": "text",
+      "value": "/collections/all",
+      "group": "hero"
+    },
+    {
+      "type": "boolean",
+      "label": "إظهار قسم المنتجات الرائجة (Show Trending Products)",
+      "id": "show_trending",
+      "format": "switch",
+      "selected": true,
+      "group": "sections"
+    }
+  ],
+  "features": [
+    "component-featured-products",
+    "component-fixed-banner",
+    "component-photos-slider",
+    "component-products-slider",
+    "component-store-features",
+    "filters"
+  ],
+  "components": [
+    {
+      "name": "product-card",
+      "title": "بطاقة منتج الأزياء (Fashion Product Card)",
+      "icon": "sicon-product",
+      "path": "components.product-card"
+    }
+  ]
+}
